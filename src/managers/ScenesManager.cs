@@ -1,4 +1,5 @@
 using HelloWorld.Scenes;
+using Raylib_cs;
 
 namespace HelloWorld.Managers;
 
@@ -14,7 +15,7 @@ static class ScenesManager
     /// </summary>
     static public void Update()
     {
-        _currentScene?.Update();
+        _currentScene?.Update(Raylib.GetFrameTime());
     }
 
     /// <summary>

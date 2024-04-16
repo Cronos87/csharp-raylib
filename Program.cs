@@ -10,12 +10,13 @@ class Program
     {
         Raylib.InitWindow(1280, 720, "Hello World");
         Raylib.SetTargetFPS(60);
+        Raylib.SetExitKey(0);
 
         // Init the main scene of the game.
         ScenesManager.ChangeScene(new BootScene());
 
         // Main loop of the game.
-        while (!Raylib.WindowShouldClose())
+        while (!Raylib.WindowShouldClose() && !GameManager.CanClose)
         {
             ScenesManager.Update();
 

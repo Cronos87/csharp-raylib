@@ -1,5 +1,3 @@
-using System.Diagnostics.Contracts;
-
 namespace HelloWorld.Scenes;
 
 /// <summary>
@@ -27,7 +25,7 @@ abstract class Scene
     /// <summary>
     /// Called every frame to update the scene.
     /// </summary>
-    public virtual void Update() { }
+    public virtual void Update(float deltaTime) { }
 
     /// <summary>
     /// Called every frame to draw the scene.

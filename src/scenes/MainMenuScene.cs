@@ -1,24 +1,35 @@
-using System.Numerics;
+using HelloWorld.Managers;
 using Raylib_cs;
 
 namespace HelloWorld.Scenes;
+
+/// <summary>
+/// Delegate for menu items.
+/// </summary>
+delegate void MenuCallback();
 
 /// <summary>
 /// Main menu of the game.
 /// </summary>
 class MainMenuScene : Scene
 {
-    Vector2 textPosition = new(12, 12);
+    #region Fields
 
-    readonly List<string> _menuItems = [
-        "Start Game",
-        "Options",
-        "Exit"
-    ];
+    /// <summary>
+    /// Menu items with their callbacks.
+    /// </summary>
+    readonly Dictionary<string, MenuCallback> _menuItems = new(){
+        {"Start Game", () => ScenesManager.ChangeScene(new BootScene())},
+        {"Exit", Exit}
+    };
 
     int _selectedItem = 0;
 
-    public override void Update()
+    #endregion
+
+    #region Update and Draw
+
+    public override void Update(float deltaTime)
     {
         if (Raylib.IsKeyPressed(KeyboardKey.Up))
         {
@@ -28,6 +39,12 @@ class MainMenuScene : Scene
         {
             _selectedItem = Math.Min(_menuItems.Count - 1, _selectedItem + 1);
         }
+
+        if (Raylib.IsKeyReleased(KeyboardKey.Enter))
+        {
+            var item = _menuItems.ElementAt(_selectedItem);
+            item.Value.Invoke();
+        }
     }
 
     public override void Draw()
@@ -35,10 +52,26 @@ class MainMenuScene : Scene
         Raylib.ClearBackground(Color.SkyBlue);
         Raylib.DrawText("Main Menu!", 50, 50, 20, Color.Black);
 
+        int i = 0;
+
         foreach (var item in _menuItems)
         {
-            var menuEntryColor = _menuItems.IndexOf(item) == _selectedItem ? Color.Red : Color.Black;
-            Raylib.DrawText(item, 50, 100 + _menuItems.IndexOf(item) * 20, 20, menuEntryColor);
+            var menuEntryColor = i == _selectedItem ? Color.Red : Color.Black;
+            Raylib.DrawText(item.Key, 50, 100 + i++ * 20, 20, menuEntryColor);
         }
     }
+
+    #endregion
+
+    #region Menu Items Callbacks
+
+    /// <summary>
+    /// Callback for the exit menu item that will close the game.
+    /// </summary>
+    private static void Exit()
+    {
+        GameManager.CloseGame();
+    }
+
+    #endregion
 }

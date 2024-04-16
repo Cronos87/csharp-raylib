@@ -9,32 +9,47 @@ namespace HelloWorld.Scenes;
 /// </summary>
 class BootScene : Scene
 {
-    Vector2 textPosition = new(12, 12);
-    Texture2D logo;
+    #region Fields
+
+    Vector2 _textPosition = new(12, 12);
+    Texture2D _logo;
+
+    #endregion
+
+    #region Load and Unload Content
 
     public override void LoadContent()
     {
-        logo = Raylib.LoadTexture("assets/images/logo.png");
+        _logo = Raylib.LoadTexture("assets/images/logo.png");
     }
 
-    public override void Update()
+    public override void UnloadContent()
+    {
+        Raylib.UnloadTexture(_logo);
+    }
+
+    #endregion
+
+    #region Update and Draw
+
+    public override void Update(float deltaTime)
     {
         if (Raylib.IsKeyDown(KeyboardKey.Up))
         {
-            textPosition.Y -= 2;
+            _textPosition.Y -= 2;
         }
         else if (Raylib.IsKeyDown(KeyboardKey.Down))
         {
-            textPosition.Y += 2;
+            _textPosition.Y += 2;
         }
 
         if (Raylib.IsKeyDown(KeyboardKey.Left))
         {
-            textPosition.X -= 2;
+            _textPosition.X -= 2;
         }
         else if (Raylib.IsKeyDown(KeyboardKey.Right))
         {
-            textPosition.X += 2;
+            _textPosition.X += 2;
         }
 
         if (Raylib.IsKeyReleased(KeyboardKey.Enter))
@@ -46,6 +61,8 @@ class BootScene : Scene
     public override void Draw()
     {
         Raylib.ClearBackground(Color.SkyBlue);
-        Raylib.DrawTexture(logo, (int)textPosition.X, (int)textPosition.Y, Color.White);
+        Raylib.DrawTexture(_logo, (int)_textPosition.X, (int)_textPosition.Y, Color.White);
     }
+
+    #endregion
 }
